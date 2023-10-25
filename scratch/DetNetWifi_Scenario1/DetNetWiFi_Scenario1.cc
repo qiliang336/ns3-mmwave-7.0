@@ -54,9 +54,9 @@
 #include "ns3/log.h"
 #include "ns3/ap-wifi-mac.h"
 #include "ns3/sta-wifi-mac.h"
-// #include "ns3/ftm-header.h"
+#include "ns3/ftm-header.h"
 #include "ns3/mgt-headers.h"
-// #include "ns3/ftm-error-model.h"
+#include "ns3/ftm-error-model.h"
 #include "ns3/pointer.h"
 
 
