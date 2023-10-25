@@ -417,7 +417,10 @@ class QosTxop : public Txop
      * \return the number of slots that currently make up an AIFS.
      */
     uint8_t GetAifsn(uint8_t linkId) const override;
-
+    
+    //新增
+    void SetQosFrameExchangeManager (const Ptr<QosFrameExchangeManager> qosFem);
+    void SetAccessCategory (AcIndex ac);
   protected:
     /**
      * Structure holding information specific to a single link. Here, the meaning of
@@ -486,6 +489,9 @@ class QosTxop : public Txop
         TxopTracedCallback;
 
     TxopTracedCallback m_txopTrace; //!< TXOP trace callback
+
+    //新增
+    Ptr<QosFrameExchangeManager> m_qosFem;
 };
 
 } // namespace ns3

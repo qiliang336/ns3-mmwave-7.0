@@ -1441,6 +1441,13 @@ class WifiActionHeader : public Header
         UNPROTECTED_MIMO_BF_SELECTION = 5,
     };
 
+    //新增
+    enum VendorSpecificActionValue
+    {
+      TARGET_WAKE_TIME_REQUEST = 0,
+      TARGET_WAKE_TIME_RESPOND = 1,
+    };
+
     /**
      * typedef for union of different ActionValues
      */
@@ -1455,6 +1462,8 @@ class WifiActionHeader : public Header
         DmgActionValue dmgAction;                           ///< dmg
         FstActionValue fstAction;                           ///< fst
         UnprotectedDmgActionValue unprotectedDmgAction;     ///< unprotected dmg
+        //新增
+        VendorSpecificActionValue vsa; /// Only TWT available for now
     } ActionValue;                                          ///< the action value
 
     /**

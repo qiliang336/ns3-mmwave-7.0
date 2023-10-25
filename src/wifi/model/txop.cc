@@ -648,4 +648,20 @@ Txop::IsQosTxop() const
     return false;
 }
 
+//新增
+void
+Txop::SetChannelAccessManager (const Ptr<ChannelAccessManager> manager)
+{
+  NS_LOG_FUNCTION (this << manager);
+  m_channelAccessManager = manager;
+  m_channelAccessManager->Add (this);
+}
+
+void
+Txop::SetWifiRemoteStationManager (const Ptr<WifiRemoteStationManager> remoteManager)
+{
+  NS_LOG_FUNCTION (this << remoteManager);
+  m_stationManager = remoteManager;
+}
+
 } // namespace ns3

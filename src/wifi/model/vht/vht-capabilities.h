@@ -206,6 +206,9 @@ class VhtCapabilities : public WifiInformationElement
      */
     uint32_t GetMaxAmpduLength() const;
 
+    //新增
+    void SetVhtSupported (uint8_t vhtSupported);
+
   private:
     uint16_t GetInformationFieldSize() const override;
     void SerializeInformationField(Buffer::Iterator start) const override;
@@ -239,6 +242,8 @@ class VhtCapabilities : public WifiInformationElement
     std::vector<uint8_t> m_txMcsMap;                        ///< transmit MCS map
     uint16_t m_txHighestSupportedLongGuardIntervalDataRate; ///< transmit highest supported long
                                                             ///< guard interval data rate
+    //新增
+    uint8_t m_vhtSupported;
 };
 
 /**

@@ -217,6 +217,9 @@ class HeCapabilities : public WifiInformationElement
      * \return the maximum A-MPDU length
      */
     uint32_t GetMaxAmpduLength() const;
+    //新增
+    void SetHeSupported (uint8_t heSupported);
+    void SetHeLtfAndGiForHePpdus (uint8_t heLtfAndGiForHePpdus);
 
   private:
     uint16_t GetInformationFieldSize() const override;
@@ -331,6 +334,10 @@ class HeCapabilities : public WifiInformationElement
     uint8_t m_highestMcsSupported;   //!< highest MCS support
     std::vector<uint8_t> m_txBwMap;  //!< transmit BW map
     std::vector<uint8_t> m_rxBwMap;  //!< receive BW map
+
+    //新增
+    uint8_t m_heSupported;
+    uint8_t m_heLtfAndGiForHePpdus;                    //!< HE-LTF and GI for HE-PPDUs
 };
 
 /**

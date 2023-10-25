@@ -180,7 +180,8 @@ class HtFrameExchangeManager : public QosFrameExchangeManager
     Ptr<WifiMpdu> GetBar(AcIndex ac,
                          std::optional<uint8_t> optTid = std::nullopt,
                          std::optional<Mac48Address> optAddress = std::nullopt);
-
+      //新增
+    void DestroyBlockAckAgreement (Mac48Address originator, uint8_t tid);
   protected:
     void DoDispose() override;
 
@@ -361,7 +362,8 @@ class HtFrameExchangeManager : public QosFrameExchangeManager
 
     /// pending ADDBA_RESPONSE frames indexed by agreement key
     std::map<AgreementKey, Ptr<WifiMpdu>> m_pendingAddBaResp;
-
+    //新增
+      std::map<AgreementKey, RecipientBlockAckAgreement> m_agreements; //!< agreements
   private:
     /**
      * Send the current PSDU, which can be acknowledged by a BlockAck frame or

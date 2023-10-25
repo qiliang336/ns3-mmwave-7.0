@@ -267,6 +267,9 @@ class HtCapabilities : public WifiInformationElement
      */
     uint8_t GetRxHighestSupportedAntennas() const;
 
+    //新增
+    void SetHtSupported (uint8_t htSupported);
+
   private:
     uint16_t GetInformationFieldSize() const override;
     void SerializeInformationField(Buffer::Iterator start) const override;
@@ -348,6 +351,9 @@ class HtCapabilities : public WifiInformationElement
     uint8_t m_rxASelCapable;                            ///< receive antenna selection capable
     uint8_t m_txSoundingPpdusCapable;                   ///< sounding PPDUS capable
     uint8_t m_reservedASel;                             ///< reserved ASEL
+
+    //新增
+    uint8_t m_htSupported;
 };
 
 /**

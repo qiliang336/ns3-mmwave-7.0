@@ -768,4 +768,18 @@ QosTxop::GetAccessCategory() const
     return m_ac;
 }
 
+//新增
+void
+QosTxop::SetQosFrameExchangeManager (const Ptr<QosFrameExchangeManager> qosFem)
+{
+  NS_LOG_FUNCTION (this << qosFem);
+  m_qosFem = qosFem;
+}
+
+void
+QosTxop::SetAccessCategory (AcIndex ac)
+{
+  NS_LOG_FUNCTION (this << +ac);
+  m_ac = ac;
+}
 } // namespace ns3

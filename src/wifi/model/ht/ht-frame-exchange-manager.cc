@@ -1692,4 +1692,19 @@ HtFrameExchangeManager::EndReceiveAmpdu(Ptr<const WifiPsdu> psdu,
     }
 }
 
+//新增
+void
+HtFrameExchangeManager::DestroyBlockAckAgreement  (Mac48Address originator, uint8_t tid)
+{
+  NS_LOG_FUNCTION (this << originator << +tid);
+
+  auto agreementIt = m_agreements.find ({originator, tid});
+  if (agreementIt != m_agreements.end ())
+    {
+      // forward up the buffered MPDUs before destroying the agreement
+      agreementIt->second.Flush ();
+      m_agreements.erase (agreementIt);
+    }
+}
+
 } // namespace ns3

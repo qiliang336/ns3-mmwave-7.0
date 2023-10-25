@@ -400,7 +400,10 @@ class Txop : public Object
      * the number of slots specified.
      */
     void StartBackoffNow(uint32_t nSlots, uint8_t linkId);
-
+    
+    //新增
+    void SetChannelAccessManager (const Ptr<ChannelAccessManager> manager);
+    virtual void SetWifiRemoteStationManager (const Ptr<WifiRemoteStationManager> remoteManager);
   protected:
     ///< ChannelAccessManager associated class
     friend class ChannelAccessManager;
@@ -523,7 +526,9 @@ class Txop : public Object
 
     BackoffValueTracedCallback m_backoffTrace; //!< backoff trace value
     CwValueTracedCallback m_cwTrace;           //!< CW trace value
-
+    //新增
+    Ptr<WifiRemoteStationManager> m_stationManager;   //!< the wifi remote station manager
+    Ptr<ChannelAccessManager> m_channelAccessManager; //!< the channel access manager
   private:
     /**
      * Create a LinkEntity object.

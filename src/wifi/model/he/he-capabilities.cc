@@ -621,4 +621,17 @@ operator<<(std::ostream& os, const HeCapabilities& heCapabilities)
     return os;
 }
 
+//新增
+void
+HeCapabilities::SetHeSupported (uint8_t heSupported)
+{
+  m_heSupported = heSupported;
+}
+
+void
+HeCapabilities::SetHeLtfAndGiForHePpdus (uint8_t heLtfAndGiForHePpdus)
+{
+  NS_ASSERT (heLtfAndGiForHePpdus <= 0x03);
+  m_heLtfAndGiForHePpdus = heLtfAndGiForHePpdus;
+}
 } // namespace ns3

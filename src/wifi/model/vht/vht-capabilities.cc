@@ -393,4 +393,10 @@ operator<<(std::ostream& os, const VhtCapabilities& vhtCapabilities)
     return os;
 }
 
+//新增
+void
+VhtCapabilities::SetVhtSupported (uint8_t vhtSupported)
+{
+  m_vhtSupported = vhtSupported;
+}
 } // namespace ns3

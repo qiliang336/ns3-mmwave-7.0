@@ -518,4 +518,11 @@ operator<<(std::ostream& os, const HtCapabilities& htcapabilities)
     return os;
 }
 
+//新增
+void
+HtCapabilities::SetHtSupported (uint8_t htSupported)
+{
+  m_htSupported = htSupported;
+}
+
 } // namespace ns3
