@@ -43,6 +43,10 @@ class CtrlBAckResponseHeader;
 class WifiMac;
 enum WifiMacDropReason : uint8_t; // opaque enum declaration
 
+//新增
+class WifiRemoteStationManager;
+enum AcIndex : uint8_t;
+
 /**
  * \brief Handle packet fragmentation and retransmissions
  * for data and management frames.

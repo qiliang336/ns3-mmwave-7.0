@@ -140,7 +140,7 @@ class WifiRemoteStationManager : public Object
     static TypeId GetTypeId();
 
     WifiRemoteStationManager();
-    ~WifiRemoteStationManager() override;
+    virtual ~WifiRemoteStationManager ();
 
     /// ProtectionMode enumeration
     enum ProtectionMode
