@@ -222,18 +222,18 @@ class WifiMac : public Object
      *
      * \param type the type of station.
      */
-    void SetTypeOfStation(TypeOfStation type);
+     virtual void SetTypeOfStation(TypeOfStation type);
     /**
      * Return the type of station.
      *
      * \return the type of station.
      */
-    TypeOfStation GetTypeOfStation() const;
+    virtual TypeOfStation GetTypeOfStation() const;
 
     /**
      * \param ssid the current SSID of this MAC layer.
      */
-    void SetSsid(Ssid ssid);
+    virtual void SetSsid(Ssid ssid);
     /**
      * \brief Sets the interface in promiscuous mode.
      *
@@ -241,7 +241,7 @@ class WifiMac : public Object
      * filtering on the incoming frame path may affect the overall
      * behavior.
      */
-    void SetPromisc();
+    virtual void SetPromisc();
     /**
      * Enable or disable CTS-to-self feature.
      *
@@ -253,11 +253,11 @@ class WifiMac : public Object
     /**
      * \return the MAC address associated to this MAC layer.
      */
-    Mac48Address GetAddress() const;
+    virtual Mac48Address GetAddress() const;
     /**
      * \return the SSID which this MAC layer is going to try to stay in.
      */
-    Ssid GetSsid() const;
+    virtual Ssid GetSsid() const;
     /**
      * \param address the current address of this MAC layer.
      */
@@ -266,7 +266,8 @@ class WifiMac : public Object
      * \return the BSSID of the network the given link belongs to.
      * \param linkId the ID of the given link
      */
-    Mac48Address GetBssid(uint8_t linkId) const;
+    virtual Mac48Address GetBssid(uint8_t linkId) const;
+
     /**
      * \param bssid the BSSID of the network that the given link belongs to.
      * \param linkId the ID of the given link
@@ -315,20 +316,23 @@ class WifiMac : public Object
      * \param phys the physical layers attached to this MAC.
      */
     virtual void SetWifiPhys(const std::vector<Ptr<WifiPhy>>& phys);
+
+    virtual void SetWifiPhy (Ptr<WifiPhy> phy) ;
     /**
      * \param linkId the index (starting at 0) of the PHY object to retrieve
      * \return the physical layer attached to this MAC
      */
-    Ptr<WifiPhy> GetWifiPhy(uint8_t linkId = SINGLE_LINK_OP_ID) const;
+    virtual Ptr<WifiPhy> GetWifiPhy(uint8_t linkId = SINGLE_LINK_OP_ID) const;
+    
     /**
      * Remove currently attached WifiPhy objects from this MAC.
      */
-    void ResetWifiPhys();
+    virtual void ResetWifiPhy();
 
     /**
      * \param stationManager the station manager attached to this MAC.
      */
-    void SetWifiRemoteStationManager(Ptr<WifiRemoteStationManager> stationManager);
+    virtual void SetWifiRemoteStationManager(Ptr<WifiRemoteStationManager> stationManager);
     /**
      * \param stationManagers the station managers attached to this MAC.
      */
@@ -339,7 +343,8 @@ class WifiMac : public Object
      * to retrieve
      * \return the remote station manager operating on the given link
      */
-    Ptr<WifiRemoteStationManager> GetWifiRemoteStationManager(uint8_t linkId = 0) const;
+    virtual Ptr<WifiRemoteStationManager> GetWifiRemoteStationManager(uint8_t linkId = 0) const;
+    
 
     /**
      * This type defines the callback of a higher layer that a
@@ -355,7 +360,7 @@ class WifiMac : public Object
      * \param upCallback the callback to invoke when a packet must be
      *        forwarded up the stack.
      */
-    void SetForwardUpCallback(ForwardUpCallback upCallback);
+    virtual void SetForwardUpCallback(ForwardUpCallback upCallback);
     /**
      * \param linkUp the callback to invoke when the link becomes up.
      */
@@ -363,7 +368,7 @@ class WifiMac : public Object
     /**
      * \param linkDown the callback to invoke when the link becomes down.
      */
-    void SetLinkDownCallback(Callback<void> linkDown);
+    virtual void SetLinkDownCallback(Callback<void> linkDown);
     /* Next functions are not pure virtual so non QoS WifiMacs are not
      * forced to implement them.
      */
@@ -649,11 +654,11 @@ class WifiMac : public Object
      * \param enable true if short slot time is to be supported,
      *               false otherwise
      */
-    void SetShortSlotTimeSupported(bool enable);
+    virtual void SetShortSlotTimeSupported(bool enable);
     /**
      * \return whether the device supports short slot time capability.
      */
-    bool GetShortSlotTimeSupported() const;
+    virtual bool GetShortSlotTimeSupported() const;
 
     /**
      * Accessor for the AC_VO channel access function
@@ -756,7 +761,19 @@ class WifiMac : public Object
     Callback<void> m_linkUp;   //!< Callback when a link is up
     Callback<void> m_linkDown; //!< Callback when a link is down
 
+    //从private放到protected
+    void ConfigureDcf(Ptr<Txop> dcf,
+                      uint32_t cwmin,
+                      uint32_t cwmax,
+                      bool isDsss,//类型由std::list<bool>修改为bool
+                      AcIndex ac);
+
   private:
+  void ConfigureDcf(Ptr<Txop> dcf,
+                      uint32_t cwmin,
+                      uint32_t cwmax,
+                      std::list<bool> isDsss,//类型由std::list<bool>修改为bool
+                      AcIndex ac);
     /**
      * \param dcf the DCF to be configured
      * \param cwmin the minimum contention window for the DCF
@@ -766,11 +783,7 @@ class WifiMac : public Object
      *
      * Configure the DCF with appropriate values depending on the given access category.
      */
-    void ConfigureDcf(Ptr<Txop> dcf,
-                      uint32_t cwmin,
-                      uint32_t cwmax,
-                      std::list<bool> isDsss,
-                      AcIndex ac);
+    
 
     /**
      * Configure PHY dependent parameters such as CWmin and CWmax on the given link.

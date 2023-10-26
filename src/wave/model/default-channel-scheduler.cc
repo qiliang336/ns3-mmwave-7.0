@@ -388,7 +388,7 @@ DefaultChannelScheduler::SwitchToNextChannel(uint32_t curChannelNumber, uint32_t
     // device. first make current MAC entity in sleep mode.
     curMacEntity->Suspend();
     // second unattached current MAC entity from single PHY device
-    curMacEntity->ResetWifiPhys();
+    curMacEntity->ResetWifiPhy();
     // third switch PHY device from current channel to next channel;
     m_phy->SetOperatingChannel(WifiPhy::ChannelTuple{nextChannelNumber, 0, WIFI_PHY_BAND_5GHZ, 0});
     // four attach next MAC entity to single PHY device

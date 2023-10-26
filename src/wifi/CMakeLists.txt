@@ -158,6 +158,7 @@ set(source_files
     model/ftm-session.cc
     model/ftm-error-model.cc
     model/wifi-mac-queue-item.cc
+    model/regular-wifi-mac.cc
 )
 
 set(header_files
@@ -320,6 +321,7 @@ set(header_files
     model/ftm-session.h
     model/ftm-error-model.h
     model/wifi-mac-queue-item.h
+    model/regular-wifi-mac.h
 )
 
 build_lib(

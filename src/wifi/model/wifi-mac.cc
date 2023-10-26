@@ -642,6 +642,63 @@ WifiMac::ConfigureContentionWindow(uint32_t cwMin, uint32_t cwMax)
 }
 
 void
+WifiMac::ConfigureDcf (Ptr<Txop> dcf, uint32_t cwmin, uint32_t cwmax, bool isDsss, AcIndex ac)
+{
+  NS_LOG_FUNCTION (this << dcf << cwmin << cwmax << isDsss << ac);
+  /* see IEEE 802.11 section 7.3.2.29 */
+  switch (ac)
+    {
+    case AC_VO:
+      dcf->SetMinCw ((cwmin + 1) / 4 - 1);
+      dcf->SetMaxCw ((cwmin + 1) / 2 - 1);
+      dcf->SetAifsn (2);
+      if (isDsss)
+        {
+          dcf->SetTxopLimit (MicroSeconds (3264));
+        }
+      else
+        {
+          dcf->SetTxopLimit (MicroSeconds (1504));
+        }
+      break;
+    case AC_VI:
+      dcf->SetMinCw ((cwmin + 1) / 2 - 1);
+      dcf->SetMaxCw (cwmin);
+      dcf->SetAifsn (2);
+      if (isDsss)
+        {
+          dcf->SetTxopLimit (MicroSeconds (6016));
+        }
+      else
+        {
+          dcf->SetTxopLimit (MicroSeconds (3008));
+        }
+      break;
+    case AC_BE:
+      dcf->SetMinCw (cwmin);
+      dcf->SetMaxCw (cwmax);
+      dcf->SetAifsn (3);
+      dcf->SetTxopLimit (MicroSeconds (0));
+      break;
+    case AC_BK:
+      dcf->SetMinCw (cwmin);
+      dcf->SetMaxCw (cwmax);
+      dcf->SetAifsn (7);
+      dcf->SetTxopLimit (MicroSeconds (0));
+      break;
+    case AC_BE_NQOS:
+      dcf->SetMinCw (cwmin);
+      dcf->SetMaxCw (cwmax);
+      dcf->SetAifsn (2);
+      dcf->SetTxopLimit (MicroSeconds (0));
+      break;
+    case AC_UNDEF:
+      NS_FATAL_ERROR ("I don't know what to do with this");
+      break;
+    }
+}
+
+void
 WifiMac::ConfigureDcf(Ptr<Txop> dcf,
                       uint32_t cwmin,
                       uint32_t cwmax,
@@ -735,7 +792,7 @@ WifiMac::ConfigureStandard(WifiStandard standard)
                        << "] PHY must have been set and an operating channel must have been set");
 
         // do not create a ChannelAccessManager and a FrameExchangeManager if they
-        // already exist (this function may be called after ResetWifiPhys)
+        // already exist (this function may be called after ResetWifiPhy)
         if (!link->channelAccessManager)
         {
             link->channelAccessManager = CreateObject<ChannelAccessManager>();
@@ -925,7 +982,7 @@ void
 WifiMac::SetWifiPhys(const std::vector<Ptr<WifiPhy>>& phys)
 {
     NS_LOG_FUNCTION(this);
-    ResetWifiPhys();
+    ResetWifiPhy();
 
     NS_ABORT_MSG_UNLESS(m_links.empty() || m_links.size() == phys.size(),
                         "If links have been already created, the number of provided "
@@ -938,7 +995,7 @@ WifiMac::SetWifiPhys(const std::vector<Ptr<WifiPhy>>& phys)
     for (std::size_t i = 0; i < phys.size(); i++)
     {
         // the link may already exist in case we are setting new PHY objects
-        // (ResetWifiPhys just nullified the PHY(s) but left the links)
+        // (ResetWifiPhy just nullified the PHY(s) but left the links)
         // or the remote station managers were configured first
         if (i == m_links.size())
         {
@@ -949,6 +1006,11 @@ WifiMac::SetWifiPhys(const std::vector<Ptr<WifiPhy>>& phys)
         m_links[i]->phy = phys[i];
     }
 }
+void 
+WifiMac::SetWifiPhy (Ptr<WifiPhy> phy) {
+    NS_LOG_FUNCTION(this);
+    WifiMac::SetWifiPhys({phy});
+}
 
 Ptr<WifiPhy>
 WifiMac::GetWifiPhy(uint8_t linkId) const
@@ -958,7 +1020,7 @@ WifiMac::GetWifiPhy(uint8_t linkId) const
 }
 
 void
-WifiMac::ResetWifiPhys()
+WifiMac::ResetWifiPhy()
 {
     NS_LOG_FUNCTION(this);
     for (auto& link : m_links)
@@ -1865,5 +1927,6 @@ WifiMac::GetMaxAmsduSize(AcIndex ac) const
     }
     return maxSize;
 }
+
 
 } // namespace ns3
